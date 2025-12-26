@@ -36,7 +36,7 @@ pip install pandas numpy scikit-learn sentence-transformers torch openpyxl
 python match_hs_to_ics.py
 ```
 
-## ⚠️ 重要提示（主人请注意喵！）
+## ⚠️ 重要提示（请注意喵！）
 
 本代码目前处于**硬编码配置阶段**，在正式部署前请根据实际需求修改代码开头的 `⚙️ 究极版配置` 区域：
 
