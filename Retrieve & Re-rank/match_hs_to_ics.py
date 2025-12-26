@@ -7,9 +7,6 @@ import torch
 import os
 import re
 
-# ==========================================
-# ⚙️ 究极版配置
-# ==========================================
 HS_FILE_PATH = "HS07.xlsx - Sheet1.csv"
 ICS_FILE_PATH = "Data_ics_ed7.xlsx - Sheet1.csv"
 OUTPUT_FILE = "HS_to_ICS_Ultimate_Match.xlsx"
@@ -25,8 +22,8 @@ ALPHA_KEYWORD = 0.3
 
 def robust_read_csv(file_path):
     """
-    自动尝试多种编码 + 多种分隔符读取 CSV 的聪明小工具喵
-    (升级版 V5：增加了“透视眼”，专门处理把 xlsx 直接改名为 csv 的情况！)
+    自动尝试多种编码 + 多种分隔符读取 CSV 的工具
+    (升级版：增加了“透视眼”，专门处理把 xlsx 直接改名为 csv 的情况！)
     """
     print(f"🔍 正在尝试读取文件: {file_path} ...")
     
@@ -37,7 +34,7 @@ def robust_read_csv(file_path):
         with open(file_path, 'rb') as f:
             df = pd.read_excel(f, header=None, dtype=str, engine='openpyxl')
             
-        print(f"✅ [透视眼] 发现这其实是一个 Excel 文件！成功读取: 形状 {df.shape}")
+        print(f"✅ 发现这其实是一个 Excel 文件！成功读取: 形状 {df.shape}")
         return df
     except Exception as e:
         # 如果不是 Excel，或者读取失败，就继续往下走
@@ -104,10 +101,10 @@ def robust_read_csv(file_path):
 
     # === 第三轮：最后手段 ===
     if best_df is not None:
-        print(f"⚠️ 警告: 猫猫尽力了，使用了不太完美的读取方式 (可能含乱码)，形状: {best_df.shape}")
+        print(f"⚠️ 警告: 使用了不太完美的读取方式 (可能含乱码)，形状: {best_df.shape}")
         return best_df
 
-    raise ValueError(f"🙀 呜呜，猫猫用尽全力也没能读懂这个文件的格式: {file_path}")
+    raise ValueError(f"没能读懂这个文件的格式: {file_path}")
 
 def fix_one_column_df(df, name="数据"):
     """
@@ -177,7 +174,7 @@ def preprocess_hs_with_context(hs_df):
     return hs_target
 
 def run_ultimate_matching():
-    print("🐱 启动究极匹配引擎 (Retrieve & Re-rank)...")
+    print("🐱 启动匹配引擎 (Retrieve & Re-rank)...")
     
     # 1. 加载数据
     hs_df = robust_read_csv(HS_FILE_PATH)
@@ -191,7 +188,7 @@ def run_ultimate_matching():
          ics_df = ics_df.iloc[:, :3]
          ics_df.columns = ['ICS_Code', 'ICS_Description', 'Finest_Level']
     else:
-        print("⚠️ 警告：ICS 文件少于3列，猫猫尝试强制解析...")
+        print("⚠️ 警告：ICS 文件少于3列，尝试强制解析...")
         ics_df = ics_df.iloc[:, :2]
         ics_df.columns = ['ICS_Code', 'ICS_Description']
         ics_df['Finest_Level'] = '1' 
@@ -214,7 +211,7 @@ def run_ultimate_matching():
         ics_target = ics_df
     
     if len(ics_target) == 0:
-        print("❌ 错误：ICS 目标库为空，无法进行匹配喵！")
+        print("❌ 错误：ICS 目标库为空，无法进行匹配！")
         return
 
     print(f"📊 待匹配 HS条目: {len(hs_target)}")
@@ -319,4 +316,4 @@ if __name__ == "__main__":
     except Exception as e:
         import traceback
         traceback.print_exc()
-        print(f"🙀 哎呀，运行出错了主人喵: {e}")
+        print(f"🙀 哎呀，运行出错了喵: {e}")
